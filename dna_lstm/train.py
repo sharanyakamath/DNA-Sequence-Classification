@@ -20,8 +20,9 @@ from keras.models import model_from_json
 import os
 import pydot
 import graphviz
+import pickle
 
-EPCOHS = 100 #  an arbitrary cutoff, generally defined as "one pass over the entire dataset", used to separate training into distinct phases, which is useful for logging and periodic evaluation.
+EPOCHS = 100 #  an arbitrary cutoff, generally defined as "one pass over the entire dataset", used to separate training into distinct phases, which is useful for logging and periodic evaluation.
 BATCH_SIZE = 500 # a set of N samples. The samples in a batch are processed` independently, in parallel. If training, a batch results in only one update to the model.
 INPUT_DIM = 4 # a vocabulary of 4 words in case of fnn sequence (ATCG)
 OUTPUT_DIM = 50 # Embedding output
@@ -95,7 +96,7 @@ if __name__ == '__main__':
     class_weight = class_weight.compute_class_weight('balanced', np.unique(y_train), y_train)
     print(class_weight)
     history = model.fit(X_train, y_train, batch_size=BATCH_SIZE, class_weight=class_weight,
-        epochs=EPCOHS, callbacks=callbacks_list, validation_split = 0.1, verbose = 1)
+        epochs=EPOCHS, callbacks=callbacks_list, validation_split = 0.1, verbose = 1)
 
     # serialize model to JSON
     model_json = model.to_json()
